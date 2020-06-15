@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.lxj.mapper.OrgUserMapper">
+<select id="selectUsersBydeptIdAndPosition" resultType="cc.mrbird.febs.lxj.entity.OrgUserByPlus">
+  SELECT * FROM org_user
+  <where>
+      <if test="deptIds != null and deptIds.size()>0">
+      AND departmentId IN
+      <foreach item="item" index="index" collection="deptIds" open="("  close=")" separator=",">
+        #{item}
+      </foreach>
+      </if>
+
+      <if test="position != null ">
+      AND position = #{position}
+      </if>
+  </where>
+</select>
+
+    <select id="selectPositionList" resultType="java.lang.String">
+        select DISTINCT position from org_user
+    </select>
+
+    <select id="selectPositionListByDept" parameterType="java.util.List" resultType="java.lang.String">
+        select DISTINCT position from org_user
+        <where>
+        <if test="deptIds != null and deptIds.size()>0">
+            AND departmentId IN
+            <foreach item="item" index="index" collection="deptIds" open="("  close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        </where>
+    </select>
+</mapper>
